@@ -1105,8 +1105,11 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
         TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors);
     }
 
-    if (DECR(titleCtx->delayTimer) == 0) {
-        if (titleCtx->durationTimer == 80) {
+//    if (DECR(titleCtx->delayTimer) == 0) {                //Rozelette 60-test
+//       if (titleCtx->durationTimer == 80) {               //* * * * * * * * *
+    if (DECR_LOGIC(titleCtx->delayTimer) == 0) {            //* * * * * * * * *
+        if (DECR_LOGIC(titleCtx->durationTimer) == 0) {     //Rozelette 60-test
+
             GameInteractor_ExecuteOnPresentTitleCard();
         }
 
@@ -1276,7 +1279,8 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
 }
 
 void Actor_UpdatePos(Actor* actor) {
-    f32 speedRate = R_UPDATE_RATE * 0.5f;
+//    f32 speedRate = R_UPDATE_RATE * 0.5f;                     //Rozelette 60-test
+    f32 speedRate = R_UPDATE_RATE * 0.5f * FPS_ADJUSTMENT;      //Rozelette 60-test     DrDoom Double-Check in game
 
     actor->world.pos.x += (actor->velocity.x * speedRate) + actor->colChkInfo.displacement.x;
     actor->world.pos.y += (actor->velocity.y * speedRate) + actor->colChkInfo.displacement.y;
@@ -1295,7 +1299,8 @@ void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ * speedModifier;
     actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ * speedModifier;
 
-    actor->velocity.y += actor->gravity;
+//    actor->velocity.y += actor->gravity;
+    actor->velocity.y += actor->gravity * FPS_ADJUSTMENT;       //Rozelette 60-test
     if (actor->velocity.y < actor->minVelocityY) {
         actor->velocity.y = actor->minVelocityY;
     }
@@ -2589,7 +2594,9 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         GameInteractor_ExecuteOnSceneSpawnActors();
     }
 
-    if (actorCtx->unk_02 != 0) {
+//    if (actorCtx->unk_02 != 0) {                      //Rozelette 60-test
+    if (actorCtx->unk_02 != 0 && gIsLogicFrame) {       //Rozelette 60-test
+
         actorCtx->unk_02--;
     }
 
@@ -2701,7 +2708,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
     }
 
-    func_8002C7BC(&actorCtx->targetCtx, player, actor, play);
+//    func_8002C7BC(&actorCtx->targetCtx, player, actor, play);                 //Rozelette 60-test
+    if (gIsLogicFrame) {                                                        //* * * * * * * * *
+        func_8002C7BC(&actorCtx->targetCtx, player, actor, play); // TODO       //* * * * * * * * *
+    }                                                                           //* * * * * * * * *
+                                                                                // Rozelette 60-test
     TitleCard_Update(play, &actorCtx->titleCtx);
     DynaPoly_UpdateBgActorTransforms(play, &play->colCtx.dyna);
 }

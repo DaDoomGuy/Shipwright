@@ -434,7 +434,7 @@ void GameState_Init(GameState* gameState, GameStateFunc init, GraphicsContext* g
 
     startTime = endTime;
     GameState_InitArena(gameState, 0x100000);
-    R_UPDATE_RATE = 1;
+    R_UPDATE_RATE = 1;  //Framerate divisor (60Hz/R_UPDATE_RATE = FPS Default 3 so 60/3 = 20fps)  DrDoom
     init(gameState);
 
     endTime = osGetTime();

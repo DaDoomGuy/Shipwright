@@ -72,6 +72,8 @@ namespace Fast {
 // NOTE: Once we start supporting other builds, this can be changed with an ifdef
 #define REGION_NATIVE REGION_EU
 
+#define FPS_ADJUSTMENT (20.0f / 60.0f)      //Rozelette 60-test
+
 #ifdef __cplusplus
 extern "C"
 {

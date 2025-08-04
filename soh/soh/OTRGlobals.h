@@ -26,6 +26,7 @@
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
 #include <string>
+extern "C" int gIsLogicFrame;           //Rozelette 60-test
 
 struct ExtensionEntry {
     std::string path;
@@ -87,6 +88,8 @@ class OTRGlobals {
 #endif
 
 #ifndef __cplusplus
+extern int gIsLogicFrame;       //Rozelette 60-test
+
 void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();

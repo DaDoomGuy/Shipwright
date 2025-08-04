@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/OTRGlobals.h"                                     //Rozelette 60-test 
 
 void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx) {
     frameAdvCtx->timer = 0;
@@ -21,7 +22,11 @@ s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input) {
     if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 0) ||
         (CHECK_BTN_ALL(input->cur.button, BTN_Z) &&
          (CHECK_BTN_ALL(input->press.button, BTN_R) ||
-          (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))))) {
+//          (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))))) {   //Rozelette 60-test
+                                                                                            //* * * * * * * * *
+          (CHECK_BTN_ALL(input->cur.button, BTN_R) &&                                       //* * * * * * * * *
+          ((gIsLogicFrame ? ++frameAdvCtx->timer : frameAdvCtx->timer) >= 9))))) {          //* * * * * * * * *
+                                                                                            // Rozelette 60-test
         CVarClear(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"));
         frameAdvCtx->timer = 0;
         return true;

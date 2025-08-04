@@ -293,7 +293,11 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     CLOSE_DISPS(gfxCtx);
 
-    GameState_ReqPadData(gameState);
+    // GameState_ReqPadData(gameState);             //Rozelette 60-test
+    if (gIsLogicFrame) {                            //* * * * * * * * *
+        GameState_ReqPadData(gameState); // TODO    //* * * * * * * * * 
+    }                                               //Rozelette 60-test
+
     GameState_Update(gameState);
 
     OPEN_DISPS(gfxCtx);

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/OTRGlobals.h"             //Rozelette 60-test
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -107,7 +108,10 @@ void KaleidoScopeCall_Update(PlayState* play) {
             }
 
             if (gKaleidoMgrCurOvl == kaleidoScopeOvl) {
-                sKaleidoScopeUpdateFunc(play);
+//                sKaleidoScopeUpdateFunc(play);
+                if (gIsLogicFrame) {
+                    sKaleidoScopeUpdateFunc(play); // TODO
+                }
 
                 if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
                     osSyncPrintf(VT_FGCOL(GREEN));

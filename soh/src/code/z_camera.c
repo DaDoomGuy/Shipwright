@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
-
+#include "soh/OTRGlobals.h"                             //Rozelette 60-test
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/controls/Mouse.h"
 
@@ -7466,6 +7466,10 @@ void Camera_UpdateDistortion(Camera* camera) {
             return;
         }
 
+        depthPhaseStep *= FPS_ADJUSTMENT;               //Rozelette 60-test
+        screenPlanePhaseStep *= FPS_ADJUSTMENT;         //Rozelette 60-test
+
+
         depthPhase += DEGF_TO_BINANG(depthPhaseStep);
         screenPlanePhase += DEGF_TO_BINANG(screenPlanePhaseStep);
 
@@ -7474,7 +7478,8 @@ void Camera_UpdateDistortion(Camera* camera) {
         View_SetDistortionScale(&camera->play->view, Math_SinS(screenPlanePhase) * (xScale * scaleFactor) + 1.0f,
                                 Math_CosS(screenPlanePhase) * (yScale * scaleFactor) + 1.0f,
                                 Math_CosS(depthPhase) * (zScale * scaleFactor) + 1.0f);
-        View_SetDistortionSpeed(&camera->play->view, speed * speedFactor);
+        //View_SetDistortionSpeed(&camera->play->view, speed * speedFactor);                    //Rozelette 60-test
+        View_SetDistortionSpeed(&camera->play->view, speed * speedFactor * FPS_ADJUSTMENT);     //Rozelette 60-test
 
         camera->unk_14C |= 0x40;
 
@@ -7538,8 +7543,13 @@ Vec3s Camera_Update(Camera* camera) {
             camera->playerGroundY = playerGroundY;
         } else {
             // player is not above ground.
-            sOOBTimer++;
-            camera->floorNorm.x = 0.0;
+
+            // sOOBTimer++;                             //Rozelette 60-test
+            if (gIsLogicFrame) {                        //* * * * * * * * *
+                sOOBTimer++;                            //* * * * * * * * *
+            }                                           //Rozelette 60-test
+
+            camera->floorNorm.x = 0.0;                  
             camera->floorNorm.y = 1.0f;
             camera->floorNorm.z = 0.0;
         }

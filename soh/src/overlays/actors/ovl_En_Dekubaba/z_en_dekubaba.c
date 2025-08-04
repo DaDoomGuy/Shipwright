@@ -481,9 +481,9 @@ void EnDekubaba_Wait(EnDekubaba* this, PlayState* play) {
     this->actor.world.pos.z = this->actor.home.pos.z;
     this->actor.world.pos.y = this->actor.home.pos.y + 14.0f * this->size;
 
-    if ((this->timer == 0) && (this->actor.xzDistToPlayer < 200.0f * this->size) &&
+    if ((this->timer == 0) && (this->actor.xzDistToPlayer < 200.0f * this->size) &&     //When you are closer than 200 units it grows out
         (fabsf(this->actor.yDistToPlayer) < 30.0f * this->size)) {
-        EnDekubaba_SetupGrow(this);
+        EnDekubaba_SetupGrow(this);   //Only effects Deku Baba Inside Deku-Tree
     }
 }
 

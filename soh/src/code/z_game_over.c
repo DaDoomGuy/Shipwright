@@ -96,7 +96,10 @@ void GameOver_Update(PlayState* play) {
             break;
 
         case GAMEOVER_DEATH_DELAY_MENU:
-            gGameOverTimer--;
+//            gGameOverTimer--;                         //Rozelette 60-test
+            if (gIsLogicFrame) {                        //* * * * * * * * *
+                gGameOverTimer--;                       //* * * * * * * * *
+            }                                           //Rozelette 60-test
 
             if (gGameOverTimer == 0) {
                 play->pauseCtx.state = 8;
@@ -125,7 +128,11 @@ void GameOver_Update(PlayState* play) {
             break;
 
         case GAMEOVER_REVIVE_WAIT_GROUND:
-            gGameOverTimer--;
+//            gGameOverTimer--;                         //Rozelette 60-test
+            if (gIsLogicFrame) {                        //* * * * * * * * *
+                gGameOverTimer--;                       //* * * * * * * * *
+            }                                           // Rozelette 60-test
+
 
             if (gGameOverTimer == 0) {
                 gGameOverTimer = 64;
@@ -134,7 +141,10 @@ void GameOver_Update(PlayState* play) {
             break;
 
         case GAMEOVER_REVIVE_WAIT_FAIRY:
-            gGameOverTimer--;
+//            gGameOverTimer--;                         //Rozelette 60-test
+            if (gIsLogicFrame) {                        //* * * * * * * * *
+                gGameOverTimer--;                       //* * * * * * * * *
+            }                                           // Rozelette 60-test
 
             if (gGameOverTimer == 0) {
                 gGameOverTimer = 50;
@@ -144,7 +154,11 @@ void GameOver_Update(PlayState* play) {
 
         case GAMEOVER_REVIVE_FADE_OUT:
             Environment_FadeOutGameOverLights(play);
-            gGameOverTimer--;
+//            gGameOverTimer--;                         //Rozelette 60-test
+            if (gIsLogicFrame) {                        //* * * * * * * * *
+                gGameOverTimer--;                       //* * * * * * * * *
+            }                                           // Rozelette 60-test
+
 
             if (gGameOverTimer == 0) {
                 gameOverCtx->state = GAMEOVER_INACTIVE;

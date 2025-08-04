@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/OTRGlobals.h"                 //Rozelette 60-test
 
 void SoundSource_InitAll(PlayState* play) {
     SoundSource* sources = &play->soundSources[0];
@@ -15,7 +16,8 @@ void SoundSource_UpdateAll(PlayState* play) {
 
     for (i = 0; i < ARRAY_COUNT(play->soundSources); i++) {
         if (source->countdown != 0) {
-            if (DECR(source->countdown) == 0) {
+//            if (DECR(source->countdown) == 0) {               //Rozelette 60-test
+            if (DECR_LOGIC(source->countdown) == 0) {           //Rozelette 60-test
                 Audio_StopSfxByPos(&source->projectedPos);
             } else {
                 SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &source->worldPos, &source->projectedPos);

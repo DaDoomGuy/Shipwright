@@ -1499,6 +1499,8 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
     }
     ImGui::PopStyleColor();
 }
+int gIsLogicFrame = true;   //Rozelette 60-test
+
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
@@ -1513,9 +1515,28 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     static int last_fps;
     static int last_update_rate;
     static int time;
+    static double logicFrameError = 0.0;    ////Rozelette 60-test
     int fps = target_fps;
     int original_fps = 60 / R_UPDATE_RATE;
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+
+    if (R_UPDATE_RATE == 3) {                   //Rozelette 60-test
+        original_fps = 60;                      // * * * * * * * *
+    }                                           // * * * * * * * *
+                                                // * * * * * * * *
+    if (R_UPDATE_RATE == 3) {                   // * * * * * * * *
+        logicFrameError += 1.0f / 60;           // * * * * * * * *
+        if (logicFrameError > (1.0f / 20)) {    // * * * * * * * *
+            logicFrameError -= 1.0f / 20;       // * * * * * * * *
+            gIsLogicFrame = true;               // * * * * * * * *
+        } else {                                // * * * * * * * *
+            gIsLogicFrame = false;              // * * * * * * * *
+        }                                       // * * * * * * * *
+    } else {                                    // * * * * * * * *
+        gIsLogicFrame = true;                   // * * * * * * * *
+    }                                           //Rozelette 60-test
+
+
 
     if (target_fps == 20 || original_fps > target_fps) {
         fps = original_fps;

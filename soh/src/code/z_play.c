@@ -989,8 +989,9 @@ void Play_Update(PlayState* play) {
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
                         play->transitionMode = TRANS_MODE_OFF;
-                    } else {
-                        sTransitionFillTimer++;
+//                    } else {                          //Rozelette 60-test
+                    } else if (gIsLogicFrame) {         //Rozelette 60-test
+                         sTransitionFillTimer++;
                     }
                     break;
 
@@ -1003,7 +1004,8 @@ void Play_Update(PlayState* play) {
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
                         play->transitionMode = TRANS_MODE_OFF;
                         play->envCtx.fillScreen = false;
-                    } else {
+//                    } else {                          //Rozelette 60-test
+                    } else if (gIsLogicFrame) {         // Rozelette 60-test 
                         sTransitionFillTimer++;
                     }
                     break;
@@ -1163,7 +1165,11 @@ void Play_Update(PlayState* play) {
             if (!isPaused && (IREG(72) == 0)) {
                 PLAY_LOG(3580);
 
-                play->gameplayFrames++;
+//                play->gameplayFrames++;                       //Rozelette 60-test
+                if (gIsLogicFrame) {                            //* * * * * * * * *
+                    play->gameplayFrames++; // TODO float       //* * * * * * * * *
+                }                                               //Rozelette 60-test
+
                 func_800AA178(true);
 
                 // Gameplay stat tracking
@@ -1179,7 +1185,13 @@ void Play_Update(PlayState* play) {
                     }
                 }
 
-                if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
+//                if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {             //Rozelette 60-test
+                if (play->actorCtx.freezeFlashTimer &&                                                          //* * * * * * * * *
+                    ((gIsLogicFrame ? play->actorCtx.freezeFlashTimer-- : play->actorCtx.freezeFlashTimer) <    //* * * * * * * * *
+                     5)) {                                                                                      //Rozelette 60-test
+
+
+
                     osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
 
                     if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
@@ -1213,16 +1225,24 @@ void Play_Update(PlayState* play) {
                     }
 
                     PLAY_LOG(3643);
-                    func_80064558(play, &play->csCtx);
-
+                    if (gIsLogicFrame) {                    //Rozelette 60-test
+                        func_80064558(play, &play->csCtx);
+                    }                                       //Rozelette 60-test
+                    
                     PLAY_LOG(3648);
+                    if (gIsLogicFrame) {                    // Rozelette 60-test
                     func_800645A0(play, &play->csCtx);
+                    }                                       // Rozelette 60-test
 
                     PLAY_LOG(3651);
+                    if (gIsLogicFrame) {                    //Rozelette 60-test
                     Effect_UpdateAll(play);
+                    }                                       // Rozelette 60-test
 
                     PLAY_LOG(3657);
+                    if (gIsLogicFrame) {                    //Rozelette 60-test
                     EffectSs_UpdateAll(play);
+                    }                                       //Rozelette 60-test
 
                     PLAY_LOG(3662);
                 }
@@ -1278,7 +1298,9 @@ void Play_Update(PlayState* play) {
             PLAY_LOG(3737);
 
             PLAY_LOG(3742);
+            if (gIsLogicFrame) {                    // Rozelette 60-test
             Interface_Update(play);
+            }                                       // Rozelette 60-test
 
             PLAY_LOG(3765);
             AnimationContext_Update(play, &play->animationCtx);
@@ -1287,10 +1309,15 @@ void Play_Update(PlayState* play) {
             SoundSource_UpdateAll(play);
 
             PLAY_LOG(3777);
+            if (gIsLogicFrame) {                    // Rozelette 60-test
             ShrinkWindow_Update(R_UPDATE_RATE);
+            }                                       // Rozelette 60-test
 
             PLAY_LOG(3783);
+            if (gIsLogicFrame) {                    // Rozelette 60-test
             TransitionFade_Update(&play->transitionFade, R_UPDATE_RATE);
+            }                                       // Rozelette 60-test
+
         } else {
             goto skip;
         }
@@ -1321,8 +1348,10 @@ skip:
     }
 
     PLAY_LOG(3816);
+    if (gIsLogicFrame)                      { // Rozelette 60-test
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx, &play->gameOverCtx,
                        play->state.gfxCtx);
+    }                                          // Rozelette 60-test
 }
 
 void Play_DrawOverlayElements(PlayState* play) {
