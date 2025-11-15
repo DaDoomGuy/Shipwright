@@ -4827,7 +4827,7 @@ void KaleidoScope_Update(PlayState* play) {
             }
 
             pauseCtx->state = 0;
-            R_UPDATE_RATE = 3;
+            R_UPDATE_RATE = 1;        //DaDoom guy. Kaleidoscope Update rate changed so pausing the game doesn't revert FPS logic to 20
             R_PAUSE_MENU_MODE = 0;
 
             CVarSetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0);
