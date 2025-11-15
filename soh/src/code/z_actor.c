@@ -1300,7 +1300,7 @@ void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ * speedModifier;
 
 //    actor->velocity.y += actor->gravity;
-    actor->velocity.y += actor->gravity * FPS_ADJUSTMENT;       //Rozelette 60-test
+    actor->velocity.y += actor->gravity * FPS_ADJUSTMENT / 3;       //Rozelette 60-test DaDoomGuy adjusted for 60fps logic debugging
     if (actor->velocity.y < actor->minVelocityY) {
         actor->velocity.y = actor->minVelocityY;
     }
